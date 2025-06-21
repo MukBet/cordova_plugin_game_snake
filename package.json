@@ -1,0 +1,8 @@
+{
+  "name": "cordova-plugin-tennis",
+  "version": "0.0.1",
+  "cordova": {
+    "id": "com.example.myplugin.tennis",
+    "platforms": ["android", "browser"]
+  }
+}
