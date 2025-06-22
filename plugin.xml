@@ -1,7 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="cordova-plugin-tennis" version="1.0.0" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
-    <name>TennisPlugin</name>
-    <js-module name="TennisPlugin" src="www/TennisPlugin.js">
-        <clobbers target="cordova.plugins.TennisPlugin" />
+<plugin id="cordova-plugin-snake" version="1.0.0" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>SnakePlugin</name>
+    <js-module name="SnakePlugin" src="www/SnakePlugin.js">
+        <clobbers target="cordova.plugins.SnakePlugin" />
+        <runs /> <!--Это гарантирует, что SnakePlugin.js будет автоматически загружен и выполнен, даже если не вызывается напрямую через cordova.plugins.SnakePlugin-->
     </js-module>
 </plugin>

@@ -1,8 +1,8 @@
 {
-  "name": "cordova-plugin-tennis",
+  "name": "cordova-plugin-snake",
   "version": "0.0.1",
   "cordova": {
-    "id": "com.example.myplugin.tennis",
+    "id": "com.example.myplugin.snake",
     "platforms": ["android", "browser"]
   }
 }

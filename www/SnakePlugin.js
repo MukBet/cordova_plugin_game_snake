@@ -1,0 +1,114 @@
+var exec = require('cordova/exec');
+
+exports.coolMethod = function (arg0, success, error) {
+    exec(success, error, 'SnakePlugin', 'coolMethod', [arg0]);
+};
+
+window.startSnakeGame = function () {
+    console.log('>> startSnakeGame');
+
+    const body = document.body;
+    body.innerHTML = `
+        <div id="startScreen" style="text-align:center; margin-top: 50px;">
+            <h1>Snake Game</h1>
+            <button id="startButton">Начать игру</button>
+        </div>
+        <canvas id="snakeCanvas" style="display: none;"></canvas>
+    `;
+
+    const canvas = document.getElementById('snakeCanvas');
+    const ctx = canvas.getContext('2d');
+    const startScreen = document.getElementById('startScreen');
+    const startButton = document.getElementById('startButton');
+
+    const box = 20;
+    let snake = [];
+    let direction = 'RIGHT';
+    let food = {};
+    let gameInterval = null;
+
+    startButton.addEventListener('click', startGame);
+    document.addEventListener('keydown', handleKeyPress);
+
+    function handleKeyPress(e) {
+        if (e.key === 'ArrowLeft' && direction !== 'RIGHT') direction = 'LEFT';
+        if (e.key === 'ArrowUp' && direction !== 'DOWN') direction = 'UP';
+        if (e.key === 'ArrowRight' && direction !== 'LEFT') direction = 'RIGHT';
+        if (e.key === 'ArrowDown' && direction !== 'UP') direction = 'DOWN';
+    }
+
+    function startGame() {
+        console.log('>> Game started');
+        startScreen.style.display = 'none';
+        canvas.style.display = 'block';
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        snake = [{ x: 9 * box, y: 10 * box }];
+        direction = 'RIGHT';
+        generateFood();
+
+        gameInterval = setInterval(draw, 200);
+    }
+
+    function stopGame() {
+        clearInterval(gameInterval);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        canvas.style.display = 'none';
+        startScreen.style.display = 'block';
+    }
+
+    function generateFood() {
+        food = {
+            x: Math.floor(Math.random() * (canvas.width / box)) * box,
+            y: Math.floor(Math.random() * (canvas.height / box)) * box
+        };
+    }
+
+    function draw() {
+        ctx.fillStyle = '#000';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        for (let i = 0; i < snake.length; i++) {
+            ctx.fillStyle = i === 0 ? 'green' : 'lime';
+            ctx.fillRect(snake[i].x, snake[i].y, box, box);
+        }
+
+        ctx.fillStyle = 'red';
+        ctx.fillRect(food.x, food.y, box, box);
+
+        let headX = snake[0].x;
+        let headY = snake[0].y;
+
+        if (direction === 'LEFT') headX -= box;
+        if (direction === 'UP') headY -= box;
+        if (direction === 'RIGHT') headX += box;
+        if (direction === 'DOWN') headY += box;
+
+        // Проверка столкновений
+        if (
+            headX < 0 || headY < 0 || headX >= canvas.width || headY >= canvas.height ||
+            snake.some(segment => segment.x === headX && segment.y === headY)
+        ) {
+            clearInterval(gameInterval);
+            const restart = confirm('Game Over. Начать новую игру?');
+            if (restart) {
+                startGame();
+            } else {
+                stopGame();
+            }
+            return;
+        }
+
+        // Проверка еды
+        if (headX === food.x && headY === food.y) {
+            generateFood();
+        } else {
+            snake.pop();
+        }
+
+        let newHead = { x: headX, y: headY };
+        snake.unshift(newHead);
+    }
+};
