@@ -4,6 +4,15 @@ exports.coolMethod = function (arg0, success, error) {
     exec(success, error, 'SnakePlugin', 'coolMethod', [arg0]);
 };
 
+exports.vibrate = function (duration, success, error) {
+    exec(success, error, 'SnakePlugin', 'vibrate', [duration]);
+};
+
+document.addEventListener('deviceready', function () {
+    console.log('Device is ready');
+    console.log('SnakePlugin доступен:', cordova.plugins?.SnakePlugin);
+});
+
 window.startSnakeGame = function () {
     console.log('>> startSnakeGame');
 
@@ -91,7 +100,16 @@ window.startSnakeGame = function () {
             headX < 0 || headY < 0 || headX >= canvas.width || headY >= canvas.height ||
             snake.some(segment => segment.x === headX && segment.y === headY)
         ) {
+            console.log('cordova.plugins:', cordova.plugins);
+
             clearInterval(gameInterval);
+
+            if (window.cordova && cordova.plugins && cordova.plugins.SnakePlugin && cordova.plugins.SnakePlugin.vibrate) {
+                cordova.plugins.SnakePlugin.vibrate(500, () => console.log('Вибрация прошла'), console.error);
+            } else {
+                console.warn('Вибрация недоступна или плагин не загружен');
+            }
+
             const restart = confirm('Game Over. Начать новую игру?');
             if (restart) {
                 startGame();
