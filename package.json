@@ -2,7 +2,9 @@
   "name": "cordova-plugin-snake",
   "version": "0.0.1",
   "cordova": {
-    "id": "com.example.myplugin.snake",
+    "id": "cordova-plugin-snake",
     "platforms": ["android", "browser"]
-  }
+  },
+  "author": "Andrui Software Foundation",
+  "license": "Apache-2.0"
 }

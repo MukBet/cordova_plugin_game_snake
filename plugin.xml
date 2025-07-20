@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="cordova-plugin-snake-newid" version="1.0.0" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+<plugin id="cordova-plugin-snake" version="1.0.0" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
     <name>SnakePlugin</name>
     <js-module name="SnakePlugin" src="www/SnakePlugin.js">
         <clobbers target="cordova.plugins.SnakePlugin" />
@@ -9,9 +9,12 @@
         <source-file src="src/android/SnakePlugin.java" target-dir="src/cordova/plugin/snake" />
         <config-file target="AndroidManifest.xml" parent="/*">
             <uses-permission android:name="android.permission.VIBRATE" />
+            <uses-permission android:name="android.permission.CAMERA" />
         </config-file>
-         <feature name="SnakePlugin">
-            <param name="android-package" value="cordova.plugin.snake.SnakePlugin" />
-        </feature>
+        <config-file target="config.xml" parent="/*">
+            <feature name="SnakePlugin">
+                <param name="android-package" value="cordova.plugin.snake.SnakePlugin"/>
+            </feature>
+        </config-file>
     </platform>
 </plugin>

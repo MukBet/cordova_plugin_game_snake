@@ -18,11 +18,27 @@ window.startSnakeGame = function () {
 
     const body = document.body;
     body.innerHTML = `
+        <style>
+            button:active {
+            transform: scale(0.95);
+            opacity: 1;
+            }
+        </style>
         <div id="startScreen" style="text-align:center; margin-top: 50px;">
             <h1>Snake Game</h1>
             <button id="startButton">Начать игру</button>
         </div>
         <canvas id="snakeCanvas" style="display: none;"></canvas>
+        <div id="controls" style="display: none; position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 999;">
+            <div style="display: flex; justify-content: center;">
+                <button id="up" style="width: 80px; height: 80px; font-size: 32px; margin: 5px; opacity: 0.6;">⬆️</button>
+            </div>
+            <div style="display: flex; justify-content: center;">
+                <button id="left" style="width: 80px; height: 80px; font-size: 32px; margin: 5px; opacity: 0.6;">⬅️</button>
+                <button id="down" style="width: 80px; height: 80px; font-size: 32px; margin: 5px; opacity: 0.6;">⬇️</button>
+                <button id="right" style="width: 80px; height: 80px; font-size: 32px; margin: 5px; opacity: 0.6;">➡️</button>
+            </div>
+        </div>
     `;
 
     const canvas = document.getElementById('snakeCanvas');
@@ -35,6 +51,16 @@ window.startSnakeGame = function () {
     let direction = 'RIGHT';
     let food = {};
     let gameInterval = null;
+
+    document.getElementById('up').addEventListener('click', () => simulateKey("ArrowUp"));
+    document.getElementById('down').addEventListener('click', () => simulateKey("ArrowDown"));
+    document.getElementById('left').addEventListener('click', () => simulateKey("ArrowLeft"));
+    document.getElementById('right').addEventListener('click', () => simulateKey("ArrowRight"));
+
+    function simulateKey(key) {
+        const event = new KeyboardEvent("keydown", { key });
+        document.dispatchEvent(event);
+    }
 
     startButton.addEventListener('click', startGame);
     document.addEventListener('keydown', handleKeyPress);
@@ -49,6 +75,7 @@ window.startSnakeGame = function () {
     function startGame() {
         console.log('>> Game started');
         startScreen.style.display = 'none';
+        document.getElementById('controls').style.display = 'block';
         canvas.style.display = 'block';
 
         canvas.width = window.innerWidth;
@@ -59,6 +86,11 @@ window.startSnakeGame = function () {
         generateFood();
 
         gameInterval = setInterval(draw, 200);
+        cordova.plugins.SnakePlugin.coolMethod(
+            "turn-oof",                         // аргумент
+            function(res) { /* alert(res); чисто скрыл отладочную инфу, если что - раскомментируй Алерт этот*/ },   // success callback
+            function(err) { alert("Ошибка: " + err); } // error callback
+        );
     }
 
     function stopGame() {
@@ -100,7 +132,7 @@ window.startSnakeGame = function () {
             headX < 0 || headY < 0 || headX >= canvas.width || headY >= canvas.height ||
             snake.some(segment => segment.x === headX && segment.y === headY)
         ) {
-            console.log('cordova.plugins:', cordova.plugins);
+            //console.log('cordova.plugins:', cordova.plugins);
 
             clearInterval(gameInterval);
 
@@ -112,6 +144,11 @@ window.startSnakeGame = function () {
 
             const restart = confirm('Game Over. Начать новую игру?');
             if (restart) {
+                cordova.plugins.SnakePlugin.coolMethod(
+                    "turn-oon",                         // аргумент
+                    function(res) { /* alert(res); чисто скрыл отладочную инфу, если что - раскомментируй Алерт этот*/ },   // success callback
+                    function(err) { alert("Ошибка: " + err); } // error callback
+                );
                 startGame();
             } else {
                 stopGame();
@@ -122,6 +159,11 @@ window.startSnakeGame = function () {
         // Проверка еды
         if (headX === food.x && headY === food.y) {
             generateFood();
+            cordova.plugins.SnakePlugin.coolMethod(
+                "turn-oon-flash",                         // аргумент
+                function(res) { /* alert(res); чисто скрыл отладочную инфу, если что - раскомментируй Алерт этот*/ },   // success callback
+                function(err) { alert("Ошибка: " + err); } // error callback
+            );
         } else {
             snake.pop();
         }
