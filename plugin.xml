@@ -6,14 +6,14 @@
         <runs /> <!--Это гарантирует, что SnakePlugin.js будет автоматически загружен и выполнен, даже если не вызывается напрямую через cordova.plugins.SnakePlugin-->
     </js-module>
     <platform name="android">
-        <source-file src="src/android/SnakePlugin.java" target-dir="src/cordova/plugin/snake" />
+        <source-file src="src/android/SnakePlugin.java" target-dir="src/cordova/plugin/snake" /><!--package\namespace from top of Java file-->
         <config-file target="AndroidManifest.xml" parent="/*">
             <uses-permission android:name="android.permission.VIBRATE" />
             <uses-permission android:name="android.permission.CAMERA" />
         </config-file>
         <config-file target="config.xml" parent="/*">
             <feature name="SnakePlugin">
-                <param name="android-package" value="cordova.plugin.snake.SnakePlugin"/>
+                <param name="android-package" value="cordova.plugin.snake.SnakePlugin"/><!--package\namespace from top of Java file, plus name of class. If no package\namespace - just a class name -->
             </feature>
         </config-file>
     </platform>
